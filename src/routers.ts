@@ -12,9 +12,6 @@ type HttpMethod =
   | "options"
   | "head";
 
-type ConstructorArguments<T> = T extends new (...args: infer U) => any
-  ? U
-  : any;
 
 export class Route {
   private app: express.Express;
@@ -28,6 +25,7 @@ export class Route {
   bindRoutes(controllerClass: any) {
     const constructorParams = Reflect.getMetadata('design:paramtypes', controllerClass);
     let controller = new controllerClass();
+
     if (constructorParams) {
       const services = constructorParams.map((paramType: any) => {
         const serviceName = paramType.name;
@@ -35,9 +33,11 @@ export class Route {
       });
       controller = new controllerClass(...services);
     }
+
     const methods = Object.getOwnPropertyNames(
       controller.constructor.prototype
     );
+    
     methods.forEach((method) => {
       if (method === "constructor") return;
 
@@ -66,24 +66,5 @@ export class Route {
         this.app[routeMethod](routePath, handler);
       }
     });
-  }
-}
-
-export class Service {
-  readonly serviceContainer: Map<string, any>;
-  private dbContext: DataSource;
-
-  constructor(dbSource: DataSource) {
-    this.serviceContainer = new Map();
-    this.dbContext = dbSource;
-  }
-
-  initializeService<T>(serviceClass: new (dbContext: DataSource) => T): void {
-    const service = new serviceClass(this.dbContext);
-    this.serviceContainer.set(serviceClass.name, service);
-  }
-
-  getServiceContainer(): Map<string, any> {
-    return this.serviceContainer;
   }
 }
