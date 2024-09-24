@@ -1,11 +1,8 @@
 import { DataSource, Repository } from "typeorm";
 import { TaskDto } from "../dto";
-import { TaskRepository } from "../repositories";
 import { Task } from "../modules";
 
-
-
-export default class TaskService{
+export class TaskService{
     private taskRepository: Repository<Task>;
 
     constructor(dataSource: DataSource){

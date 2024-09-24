@@ -1,14 +1,16 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { UUID } from "typeorm/driver/mongodb/bson.typings";
 
 @Entity()
 export class User{
-    @PrimaryGeneratedColumn()
-    id:UUID;
+    @PrimaryGeneratedColumn("uuid")
+    id:string;
 
-    @Column()
-    name:string;
+    @Column({ nullable: true })
+    name?:string;
 
-    @Column()
+    @Column({ unique: true })
     email:string;
+
+    @Column()
+    passWord:string;
 }

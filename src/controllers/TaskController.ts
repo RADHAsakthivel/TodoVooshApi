@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { Get, Post } from "../decorators/http";
 import { TaskDto } from "../dto";
-import TaskService from "../services/TasksService";
+import {TaskService} from "../services";
 import {Controller} from "../decorators/controller"
 
 @Controller()
-export default class TaskController {
+export class TaskController {
   private taskService: TaskService;
   constructor(_taskService: TaskService) {
     this.taskService = _taskService;

@@ -1,2 +1,2 @@
-export {default as LoginController} from "./loginController"
-export {default as TaskController} from "./TaskController"
+export { LoginController} from "./loginController"
+export { TaskController} from "./TaskController"

@@ -1,5 +1,6 @@
 import express from "express";
 import { Request, Response } from "express";
+import { AppError } from "./CustomErrors";
 import "reflect-metadata";
 
 type HttpMethod =
@@ -69,6 +70,9 @@ export class Route {
             controller[method](req, res);
           } catch (error: any) {
             console.error("Error handling route:", error);
+            if(error instanceof AppError) {
+              return res.status(error.statusCode).json({ message: error.message });
+            }
             res.status(500).send("Internal Server Error");
           }
         };

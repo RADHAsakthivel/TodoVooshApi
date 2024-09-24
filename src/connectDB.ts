@@ -1,6 +1,5 @@
 import { DataSource } from 'typeorm';
-import { User } from './modules/user';
-import { Task } from './modules';
+import { Task,User } from './modules';
 
 /**
  * 
@@ -11,7 +10,7 @@ export async function intializeDatabase(dbUrl:string):Promise<DataSource>{
     const AppDataSource:DataSource = new DataSource({
         type: 'postgres',
         url: dbUrl,
-        entities: [Task],
+        entities: [Task,User],
         logging: true,
         synchronize: true,
         ssl: {
