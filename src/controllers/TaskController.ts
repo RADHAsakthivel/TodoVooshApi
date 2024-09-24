@@ -12,16 +12,15 @@ export default class TaskController {
   }
 
   @Get("/tasks")
-  getAllTasks() {
-    return "comming soon...";
+  async getAllTasks(req: Request, res: Response):Promise<any> {
+    let Tasks = await this.taskService.getAllTask();
+    return res.send(Tasks).status(200);
   }
 
   @Post("/task/create")
   async createTask(req: Request, res: Response): Promise<any> {
     if(!req.body) res.send("Invalid request object").status(400);
-    console.log("this.taskService =>",this.taskService)
     const response = await this.taskService.createTask(req.body);
-    console.log("operation completed")
     return res.send(response).status(200);
   }
 }

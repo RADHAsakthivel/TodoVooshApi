@@ -1,7 +1,6 @@
 import express from "express";
 import { Request, Response } from "express";
 import "reflect-metadata";
-import { DataSource } from "typeorm";
 
 type HttpMethod =
   | "get"
@@ -12,17 +11,28 @@ type HttpMethod =
   | "options"
   | "head";
 
-
+/**
+ * @private app expressApp
+ * @private serviceContainer HashMap service class
+ * @param expressApp express app to set the router and controller
+ * @param service Hashmap of serviceClass to inject in controller class
+ * @method bindRoutes registor the routes for all controller method
+ */
 export class Route {
   private app: express.Express;
   private serviceContainer: Map<string, any>;
 
-  constructor(express: express.Express, services: Map<string, any>) {
-    this.app = express;
+  constructor(expressApp: express.Express, services: Map<string, any>) {
+    this.app = expressApp;
     this.serviceContainer = services;
   }
 
-  bindRoutes(controllerClass: any) {
+  /**
+   * 
+   * @param controllerClass Take the controller class
+   * @description will intialize the controller class inject all dependency and  registor routes in express app
+   */
+  bindRoutes(controllerClass: any):void {
     const constructorParams = Reflect.getMetadata('design:paramtypes', controllerClass);
     let controller = new controllerClass();
 

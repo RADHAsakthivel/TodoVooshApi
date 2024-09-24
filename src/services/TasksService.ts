@@ -12,12 +12,20 @@ export default class TaskService{
         this.taskRepository = dataSource.getRepository(Task);
     }
 
-    async createTask(taskData:TaskDto){
+    async getAllTask():Promise<Task[]>{
+        try {
+            return await this.taskRepository.find();
+        } catch (error: any) {
+            throw new Error(`Failed to retrieve tasks: ${error}`);
+        }
+    }
+
+    async createTask(taskData:TaskDto):Promise<Task | string>{
         try{
             const task = this.taskRepository.create(taskData);
             return await this.taskRepository.save(task);
-        }catch(e:any){
-            return "unable to create the user" + e;
+        }catch(error:any){
+            throw new Error(`Failed to retrieve tasks: ${error}`);
         }
     }
 }

@@ -2,6 +2,11 @@ import { DataSource } from 'typeorm';
 import { User } from './modules/user';
 import { Task } from './modules';
 
+/**
+ * 
+ * @param dbUrl PSQL connection string
+ * @returns AppDataSource typeorm SQL context to do CRUD operation in service layer
+ */
 export async function intializeDatabase(dbUrl:string):Promise<DataSource>{
     const AppDataSource:DataSource = new DataSource({
         type: 'postgres',
