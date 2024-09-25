@@ -1,7 +1,7 @@
 import express from "express";
-import { Request, Response } from "express";
-import { AppError } from "./CustomErrors";
+import { Request, Response,NextFunction } from "express";
 import "reflect-metadata";
+import { authGuard } from "../shared/guard/authGuard";
 
 type HttpMethod =
   | "get"
@@ -62,22 +62,25 @@ export class Route {
         controller.constructor.prototype,
         method
       );
+      const isAuthRequire = Reflect.getMetadata(
+        "route:authRequired",
+        controller.constructor.prototype,
+        method
+      );
 
       if (routeMethod && routePath) {
         console.log(`Binding route: ${routeMethod} ${routePath}`);
-        const handler = (req: Request, res: Response) => {
-          try {
+        const handler = (req: Request, res: Response,next: NextFunction) => {
+          try{
             controller[method](req, res);
-          } catch (error: any) {
-            console.error("Error handling route:", error);
-            if(error instanceof AppError) {
-              return res.status(error.statusCode).json({ message: error.message });
-            }
-            res.status(500).send("Internal Server Error");
+          }catch(error:any){
+            console.log("error =>",error);
+            return res.status(500).send("Internal server error")
           }
         };
-
-        this.app[routeMethod](routePath, handler);
+        console.log("auth =>",routePath,isAuthRequire)
+        if(isAuthRequire)this.app[routeMethod](routePath,authGuard,handler);
+        else this.app[routeMethod](routePath, handler);
       }
     });
   }

@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { Task,User } from './modules';
+import { Task,User } from '../modules/Entity';
 
 /**
  * 
