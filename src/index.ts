@@ -14,6 +14,7 @@ import { ServiceBuilder } from "./configuration/serviceContainer";
 dotenv.config();
 const dbUrl = process.env.TODO_SQL_URL?.toString() as string;
 const port = process.env.TODO_PORT || 3000;
+const corsurl = process.env.TODO_CORS_ORIGIN || "*";
 const cookieSessionKey = process.env.TODO_COOKIES_SESSION_KEY as string;
 const app = express();
 app.use(express.json());
@@ -29,7 +30,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(
   cors({
-    origin: "*",
+    origin: corsurl,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
