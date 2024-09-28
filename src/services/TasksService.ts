@@ -1,10 +1,11 @@
 import { DataSource, Repository } from "typeorm";
 import { TaskDto } from "../modules/dto";
-import { Task } from "../modules/Entity";
+import { Task, User } from "../modules/Entity";
 import { NotFoundException } from "../shared/CustomErrors";
 
 export class TaskService {
   private taskRepository: Repository<Task>;
+  private userRepository: Repository<User>;
 
   constructor(dataSource: DataSource) {
     this.taskRepository = dataSource.getRepository(Task);
@@ -28,6 +29,10 @@ export class TaskService {
 
   async createTask(taskData: TaskDto): Promise<Task | string> {
     try {
+      const user = await this.userRepository.findOneBy({ id: taskData.userId });
+      if (!user) {
+        throw new Error("User not found");
+      }
       const task = this.taskRepository.create(taskData);
       return await this.taskRepository.save(task);
     } catch (error: any) {
@@ -37,6 +42,11 @@ export class TaskService {
 
   async updateTask(taskData: TaskDto): Promise<Task | string> {
     try {
+      const user = await this.userRepository.findOneBy({ id: taskData.userId });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
       const task = await this.taskRepository.findOne({
         where: {
           id: taskData.id,

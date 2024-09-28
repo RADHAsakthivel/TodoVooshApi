@@ -12,10 +12,10 @@ export class LoginService {
 
   async createUser(user: UserDto): Promise<User> {
     const saltRounds = 10;
-    const encryptPassWord = await bcrypt.hash(user.passWord, saltRounds);
+    const encryptpassword = await bcrypt.hash(user.password, saltRounds);
     const createUser = this.userRepository.create({
       ...user,
-      passWord: encryptPassWord,
+      password: encryptpassword,
     });
     return await this.userRepository.save(createUser);
   }

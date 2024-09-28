@@ -1,6 +1,7 @@
 export class UserDto{
     id?:string;
-    name?:string;
+    firstName?:string;
+    lastName?:string;
     email:string;
-    passWord:string;
+    password:string;
 }

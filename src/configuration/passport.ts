@@ -30,7 +30,7 @@ export function passPortConfig(dbContext: DataSource): void {
             if (!userData && profile?.emails?.length) {
               userData = userRepo.create({
                 email: mails[0].value,
-                name: `${profile?.name?.givenName} ${profile?.name?.familyName}`,
+                firstName: `${profile?.name?.givenName} ${profile?.name?.familyName}`,
               });
               await userRepo.save(userData);
             }

@@ -46,8 +46,8 @@ export class LoginController {
       return res.status(404).send(new NotFoundResponse("User not found"));
     }
     const isMatch = await bcrypt.compare(
-      userData.passWord,
-      existingUser.passWord
+      userData.password,
+      existingUser.password
     );
     if (!isMatch) {
       return res
@@ -63,7 +63,7 @@ export class LoginController {
     console.log("decode =>", decode, (decode.exp || 0) - (decode.iat || 0));
     return res
       .status(200)
-      .send(new SucessResponse("Logined sucessfully", token));
+      .send(new SucessResponse("Logined sucessfully", {token}));
   }
 
   @Get("/auth/google", false)

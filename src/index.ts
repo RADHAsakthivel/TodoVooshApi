@@ -14,7 +14,7 @@ import { ServiceBuilder } from "./configuration/serviceContainer";
 dotenv.config();
 const dbUrl = process.env.TODO_SQL_URL?.toString() as string;
 const port = process.env.TODO_PORT || 3000;
-const cookieSessionKey = process.env.TODO_COOKIES_SESSION_KEY as string
+const cookieSessionKey = process.env.TODO_COOKIES_SESSION_KEY as string;
 const app = express();
 app.use(express.json());
 app.use(
@@ -40,7 +40,7 @@ process.on("uncaughtException", (error) => {
 });
 
 intializeDatabase(dbUrl)
-.then((dbContext) => {
+  .then((dbContext) => {
     passPortConfig(dbContext);
     const service = new ServiceBuilder(dbContext as DataSource);
 
